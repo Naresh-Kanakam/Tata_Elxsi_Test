@@ -8,6 +8,13 @@ export default function movies_list_reducer(state=movies, action){
                 getMoviesList:action.payload
             }
 
+        case "MOVIE_DETAILS":                
+            return{
+                ...state,
+                getMovieDetails:action.payload
+            }    
+            
+
         default: 
             return state
     }

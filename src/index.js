@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import App from '../src/components/App';
+import MovieDetails from './components/MovieDetails';
 
 import rootReducer from './reducers';
 import promiseMiddleware from 'redux-promise';
@@ -17,6 +18,7 @@ ReactDOM.render(<Provider store={createStoreWithMiddleware(rootReducer)}>
                   <Router>
                     <Switch>
                       <Route exact path='/' component={App} />
+                      <Route exact path='/:name' component={MovieDetails} />
                     </Switch>
                   </Router>
                 </Provider>

@@ -1,0 +1,9 @@
+.MuiCardActions-root{
+    padding: 0px 8px 8px 8px !important;
+    justify-content: center !important;
+}
+
+.MuiPaper-outlined{
+    margin: 10px 10px !important;
+    border-radius: 15px !important;
+}

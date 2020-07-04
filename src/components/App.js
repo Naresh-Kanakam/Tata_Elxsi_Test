@@ -10,6 +10,7 @@ class App extends Component {
   }
 
   render() {
+    console.log("rendder movies", this.props.allMovies)
     return (
       <div>
         <MoviesList movies={this.props.allMovies}/>
@@ -19,6 +20,7 @@ class App extends Component {
 }
 
 function mapStateToProps(state){
+  console.log(state)
   return{
     allMovies:state.movies.getMoviesList
   }
