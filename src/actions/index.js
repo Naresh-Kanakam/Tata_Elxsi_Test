@@ -18,3 +18,10 @@ export const getMovieDetails = (title) => {
         payload:getMovieDetails
     }
 }
+
+export const updateSelectedMovieId=(id) => {
+    return {
+        type: "movieId",
+        payload: id
+    }
+}

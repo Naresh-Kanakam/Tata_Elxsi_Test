@@ -8,6 +8,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import CardMedia from '@material-ui/core/CardMedia';
 import {Link, withRouter} from 'react-router-dom';
+import {get} from 'lodash';
 
 const useStyles = ({
     root: {
@@ -42,37 +43,33 @@ class MovieDetails extends Component {
     }
 
     render() {
-        const { classes } = this.props;
+        const { classes,movieId } = this.props;
         return (
             <div>
                {
                    this.props.movieDet && this.props.movieDet.map(movdet => {
-                       return(
-                           <div key={movdet.id}>
-                               {
-                             (typeof(movdet.components[1].items)=='object')?
-                            <div style={{display:'flex', flexWrap:'wrap'}}>
-                                {
-                                    movdet.components[1].items.map(item => {
-                                       return( <div>
-                                            <Card variant="outlined">
-                                                <CardContent>
-                                                    <CardMedia>
-                                                        <img className={classes.media} src={item.imageUrl}></img>
-                                                    </CardMedia>
-                                                </CardContent>
-                                                <CardActions>
-                                                    <Button size="small">{item.title}</Button>
-                                                </CardActions>
-                                            </Card>
-                                        </div> )   
-                                    })
-                                }
-                            </div> 
-                            :null   
-                        }
-                           </div>
-                       )
+                       if(movdet.id === movieId) {
+                        return(
+                            <div key={movdet.id}>
+                             <div style={{display:'flex', flexWrap:'wrap'}}>
+ <div>
+                                             <Card variant="outlined">
+                                                 <CardContent>
+                                                     <CardMedia>
+                                                         <img className={classes.media} src={movdet.imageUrl}></img>
+                                                     </CardMedia>
+                                                 </CardContent>
+                                                 <CardActions>
+                                                     <Button size="small">{movdet.title}</Button>
+                                                 </CardActions>
+                                             </Card>
+                                        <h3>{movdet.synopsis}</h3>
+                                         </div>  
+
+                             </div> 
+                            </div>
+                        )
+                       }
                    })
                }
             </div>
@@ -83,7 +80,8 @@ class MovieDetails extends Component {
 const mapStateToProps = (state) => {
     console.log("movieDet", state.movies.getMovieDetails)
     return{
-        movieDet: state.movies.getMovieDetails 
+        movieDet: get(state,'movies.getMovieDetails.movies[0].components[1].items',[]),
+        movieId: get(state,'selectedId.id','')
     }
 }
 
