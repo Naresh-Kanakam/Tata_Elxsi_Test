@@ -18,7 +18,7 @@ ReactDOM.render(<Provider store={createStoreWithMiddleware(rootReducer)}>
                   <Router>
                     <Switch>
                       <Route exact path='/' component={App} />
-                      <Route exact path='/:name' component={MovieDetails} />
+                      <Route path='/moviedetails' component={MovieDetails} />
                     </Switch>
                   </Router>
                 </Provider>

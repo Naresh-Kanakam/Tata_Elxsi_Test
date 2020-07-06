@@ -2,12 +2,10 @@ import React, { Component } from 'react'
 import {getMovieDetails} from '../actions'
 import {connect} from 'react-redux'
 import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import CardMedia from '@material-ui/core/CardMedia';
-import {Link, withRouter} from 'react-router-dom';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import {get} from 'lodash';
 
 const useStyles = ({
@@ -47,30 +45,42 @@ class MovieDetails extends Component {
         return (
             <div>
                {
-                   this.props.movieDet && this.props.movieDet.map(movdet => {
-                       if(movdet.id === movieId) {
+                  this.props.movieDet && this.props.movieDet.map(movdet => {
+                      if(movdet.id === movieId) {
                         return(
-                            <div key={movdet.id}>
-                             <div style={{display:'flex', flexWrap:'wrap'}}>
- <div>
-                                             <Card variant="outlined">
-                                                 <CardContent>
-                                                     <CardMedia>
-                                                         <img className={classes.media} src={movdet.imageUrl}></img>
-                                                     </CardMedia>
-                                                 </CardContent>
-                                                 <CardActions>
-                                                     <Button size="small">{movdet.title}</Button>
-                                                 </CardActions>
-                                             </Card>
-                                        <h3>{movdet.synopsis}</h3>
-                                         </div>  
-
-                             </div> 
-                            </div>
+                          <div key={movdet.id}>
+                            <div style={{display:'flex', flexWrap:'wrap'}}>
+                              <div>
+                                <Paper className={classes.paper}>
+                                  <Grid container spacing={2}>
+                                    <Grid item>
+                                      <ButtonBase className={classes.image}>
+                                        <img className={classes.img} alt="complex" src={movdet.imageUrl} />
+                                      </ButtonBase>
+                                    </Grid>
+                                    <Grid item xs={12} sm container>
+                                      <Grid item xs container direction="column" spacing={2}>
+                                        <Grid item xs>
+                                          <Typography gutterBottom variant="subtitle1">
+                                            Movie Name: {movdet.title}
+                                          </Typography>
+                                          <Typography variant="body2" gutterBottom>
+                                            Released On: {movdet.releaseDate}
+                                          </Typography>
+                                          <Typography variant="body2">
+                                            Movie Description: {movdet.synopsis}
+                                          </Typography>
+                                        </Grid>
+                                      </Grid>
+                                    </Grid>
+                                  </Grid>
+                                </Paper>
+                              </div>  
+                            </div> 
+                          </div>
                         )
-                       }
-                   })
+                      }
+                  })
                }
             </div>
         )
@@ -78,7 +88,6 @@ class MovieDetails extends Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log("movieDet", state.movies.getMovieDetails)
     return{
         movieDet: get(state,'movies.getMovieDetails.movies[0].components[1].items',[]),
         movieId: get(state,'selectedId.id','')

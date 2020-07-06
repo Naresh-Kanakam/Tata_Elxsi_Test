@@ -5,10 +5,11 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import CardMedia from '@material-ui/core/CardMedia';
-import {Link, withRouter} from 'react-router-dom';
-import {get,sortBy,orderBy} from 'lodash';
+import {Link} from 'react-router-dom';
+import {get} from 'lodash';
 import {connect} from 'react-redux'
 import {updateSelectedMovieId} from '../actions/index';
+
 const useStyles = ({
   root: {
     minWidth: 275,
@@ -92,10 +93,10 @@ class MoviesList extends Component {
     }
     getButtons = () => {
         return (
-            <div style={{display:"flex" }}>
+            <div style={{display:"flex", justifyContent:"flex-end"}}>
                  <Button  variant="contained" color="primary"onClick={this.orderByReleaseDate}>Order By Release Data</Button>
                  
-                 <Button  variant="contained" color="primary" onClick={this.orderByRank}>Order By Rank</Button>
+                 <Button style={{margin: '0px 1em'}}  variant="contained" color="primary" onClick={this.orderByRank}>Order By Rank</Button>
                 </div>
         )
     }
@@ -106,15 +107,12 @@ class MoviesList extends Component {
                     return movie.items.map((each)=> {
                         return(
                             <div key={each.id} onClick={()=> {this.getMovieId(each.id)}}>
-                                <div className={classes.typeTitle}>
-                                {each.type}
-                                </div>
-                                    <div style={{display:'flex', flexWrap:'wrap'}}>
-                                                <Link to={`/${each.rank}`}>
+                                    <div>
+                                                <Link to='/moviedetails'>
                                                     <Card className={classes.root} variant="outlined">
                                                         <CardContent>
                                                             <CardMedia>
-                                                                <img className={classes.media} src={each.imageUrl}></img>
+                                                                <img alt='Poster' className={classes.media} src={each.imageUrl}></img>
                                                             </CardMedia>
                                                         </CardContent>
                                                         <CardActions>
@@ -134,14 +132,22 @@ class MoviesList extends Component {
         let {data} = this.state;
         return (
             <div>
+              <div>
                 {this.getButtons()}
+              </div>
+              <div style={{display:'flex', flexWrap:'wrap'}}>
                 {this.renderMovies(data)}
+              </div>
             </div>
         )
     }
 }
-function mapStateToProps(){
 
+const mapStateToProps = (state) =>{
+  return{
+    fetch: state.fetch
+  }
 }
+
 export default connect(mapStateToProps,{updateSelectedMovieId})(withStyles(useStyles)(MoviesList)) 
 

@@ -7,3 +7,20 @@
     margin: 10px 10px !important;
     border-radius: 15px !important;
 }
+
+.MuiPaper-elevation1.MuiPaper-root.MuiPaper-rounded{
+    width: 80% !important;
+    margin: 1em auto !important;
+}
+
+.MuiTypography-body2 {
+    font-size: 1.875rem !important;
+}
+
+.MuiTypography-subtitle1 {
+    font-size: 2.7rem !important;
+}
+
+.MuiButtonBase-root{
+    padding: 0px 10px !important;
+}
