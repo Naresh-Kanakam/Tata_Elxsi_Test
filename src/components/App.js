@@ -1,29 +1,11 @@
-import React, { Component } from 'react'
-import {connect} from 'react-redux'
-import {getMoviesList} from '../actions/index'
-import MoviesList from './MoviesList'
+import React from "react";
+import MoviesList from "../components/MoviesList";
 
-class App extends Component {
-
-  componentDidMount(){
-    this.props.getMoviesList()
-  }
-
-  render() {
-    console.log("rendder movies", this.props.allMovies)
-    return (
-      <div>
-        <MoviesList movies={this.props.allMovies}/>
-      </div>
-    )
-  }
-}
-
-function mapStateToProps(state){
-  console.log(state)
-  return{
-    allMovies:state.movies.getMoviesList
-  }
-}
-
-export default connect(mapStateToProps,{getMoviesList})(App)
+const App = () => {
+  return (
+    <div className="app">
+      <MoviesList />
+    </div>
+  );
+};
+export default App;

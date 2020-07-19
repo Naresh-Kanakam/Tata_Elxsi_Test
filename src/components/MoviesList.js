@@ -1,27 +1,27 @@
-import React, { Component } from 'react'
-import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import CardMedia from '@material-ui/core/CardMedia';
-import {Link} from 'react-router-dom';
-import {get} from 'lodash';
-import {connect} from 'react-redux'
-import {updateSelectedMovieId} from '../actions/index';
+import React, { useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import actions from "../actions";
+import { makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
+import CardMedia from "@material-ui/core/CardMedia";
+import { Link } from "react-router-dom";
+import Grid from "@material-ui/core/Grid";
 
-const useStyles = ({
+const useStyles = makeStyles(() => ({
   root: {
     minWidth: 275,
   },
   bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
+    display: "inline-block",
+    margin: "0 2px",
+    transform: "scale(0.8)",
   },
   media: {
-    height: '25em',
-    width: '20em',
+    height: "25em",
+    width: "100%",
   },
   title: {
     fontSize: 14,
@@ -30,124 +30,90 @@ const useStyles = ({
     marginBottom: 12,
   },
   typeTitle: {
-    textTransform: 'uppercase',
-    marginLeft: '1em',
-    fontSize: '2em' 
-  }
-});
+    textTransform: "uppercase",
+    marginLeft: "1em",
+    fontSize: "2em",
+  },
+  cardLoyout: {
+    padding: "10px",
+  },
+  sortContainer: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  sortTitle: {
+    fontSize: "2rem",
+    margin: "0px 10px",
+  },
+  sortButtons: {
+    margin: "0px 10px",
+  },
+}));
 
-class MoviesList extends Component {
-    constructor(){
-        super();
-        this.state = {
-            data:[]
-        }
-    }
-    getMovieId = (selectedMovieId) => {
-        this.props.updateSelectedMovieId(selectedMovieId);
-    }
-    static getDerivedStateFromProps = (props) => {
-        let data = get(props,'movies.movies[0].components',[]);
-        return {data:data};
-    }
-    
-     compareDate(a, b) {
-        // Use toUpperCase() to ignore character casing
-        const bandA = a.releaseDate;
-        const bandB = b.releaseDate;
-      
-        let comparison = 0;
-        if (bandA > bandB) {
-          comparison = 1;
-        } else if (bandA < bandB) {
-          comparison = -1;
-        }
-        return comparison;
-      }
-      compareRank(a, b) {
-        // Use toUpperCase() to ignore character casing
-        const bandA = a.rank;
-        const bandB = b.rank;
-      
-        let comparison = 0;
-        if (bandA > bandB) {
-          comparison = 1;
-        } else if (bandA < bandB) {
-          comparison = -1;
-        }
-        return comparison;
-      }
-    orderByReleaseDate = () => {
-        let {data} = this.state;
-        let x = data[1].items;
-        x.sort(this.compareDate)
-        data[1].items = x;
-        this.setState({data:data})
-    }
-    orderByRank = () => {
-        let {data} = this.state;
-        let x = data[1].items;
-        x.sort(this.compareRank)
-        data[1].items = x;
-        this.setState({data:data})
-    }
-    getButtons = () => {
-        return (
-            <div style={{display:"flex", justifyContent:"flex-end"}}>
-                 <Button  variant="contained" color="primary"onClick={this.orderByReleaseDate}>Order By Release Data</Button>
-                 
-                 <Button style={{margin: '0px 1em'}}  variant="contained" color="primary" onClick={this.orderByRank}>Order By Rank</Button>
-                </div>
-        )
-    }
-    renderMovies = (data) => {
-        const { classes } = this.props;
-            return data.map(movie => {
-                if(movie.type === "movie-list") {
-                    return movie.items.map((each)=> {
-                        return(
-                            <div key={each.id} onClick={()=> {this.getMovieId(each.id)}}>
-                                    <div>
-                                                <Link to='/moviedetails'>
-                                                    <Card className={classes.root} variant="outlined">
-                                                        <CardContent>
-                                                            <CardMedia>
-                                                                <img alt='Poster' className={classes.media} src={each.imageUrl}></img>
-                                                            </CardMedia>
-                                                        </CardContent>
-                                                        <CardActions>
-                                                            <Button size="small">{each.title}</Button>
-                                                        </CardActions>
-                                                    </Card>
-                                                </Link> 
-                                    </div> 
-                            </div>
-                        )
-                    })
-                }
-            })
-    }
+const MoviesList = () => {
+  const classes = useStyles();
+  const movieslist = useSelector((state) => state.movieslist);
 
-    render() {
-        let {data} = this.state;
-        return (
-            <div>
-              <div>
-                {this.getButtons()}
-              </div>
-              <div style={{display:'flex', flexWrap:'wrap'}}>
-                {this.renderMovies(data)}
-              </div>
-            </div>
-        )
-    }
-}
+  const moviesfilter = useSelector((state) => state.moviesfilter);
+  const dispatch = useDispatch();
+  const filterMovies = useCallback(
+    (item) =>
+      dispatch({
+        type: actions.MOVIES_LIST,
+        payload: { filterOption: item.valueToOrderBy },
+      }),
+    [dispatch]
+  );
 
-const mapStateToProps = (state) =>{
-  return{
-    fetch: state.fetch
-  }
-}
+  const movDetails = useCallback(
+    (item) => dispatch({ type: actions.MOVIES_DETAILS, payload: item }),
+    [dispatch]
+  );
 
-export default connect(mapStateToProps,{updateSelectedMovieId})(withStyles(useStyles)(MoviesList)) 
+  return (
+    <div>
+      <Grid container>
+        <Grid item xs={12} sm={12} md={12} className={classes.sortContainer}>
+          <div className={classes.sortTitle}>Sort By:- </div>
+          {moviesfilter.map((item) => (
+            <Button
+              className={classes.sortButtons}
+              variant="contained"
+              key={item.label}
+              color="primary"
+              onClick={() => filterMovies(item)}>
+              {item.label}
+            </Button>
+          ))}
+        </Grid>
+      </Grid>
 
+      <Grid container>
+        {movieslist.map((item) => (
+          <Grid className={classes.cardLoyout} item sm={6} md={4} key={item.id}>
+            <Link to={`/moviedetails/${item.rank}`}>
+              <Card
+                className={classes.root}
+                variant="outlined"
+                onClick={() => movDetails(item)}>
+                <CardContent>
+                  <CardMedia>
+                    <img
+                      alt="Poster"
+                      className={classes.media}
+                      src={item.imageUrl}></img>
+                  </CardMedia>
+                </CardContent>
+                <CardActions>
+                  <Button size="small">{item.title}</Button>
+                </CardActions>
+              </Card>
+            </Link>
+          </Grid>
+        ))}
+      </Grid>
+    </div>
+  );
+};
+
+export default MoviesList;

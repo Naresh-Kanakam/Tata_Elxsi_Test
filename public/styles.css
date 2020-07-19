@@ -1,26 +1,18 @@
-.MuiCardActions-root{
-    padding: 0px 8px 8px 8px !important;
-    justify-content: center !important;
+.MuiCardActions-root {
+  padding: 0px 8px 8px 8px !important;
+  justify-content: center !important;
 }
 
-.MuiPaper-outlined{
-    margin: 10px 10px !important;
-    border-radius: 15px !important;
+.MuiPaper-outlined {
+  margin: 10px 10px !important;
+  border-radius: 15px !important;
 }
 
-.MuiPaper-elevation1.MuiPaper-root.MuiPaper-rounded{
-    width: 80% !important;
-    margin: 1em auto !important;
-}
-
-.MuiTypography-body2 {
-    font-size: 1.875rem !important;
+.MuiPaper-elevation1.MuiPaper-root.MuiPaper-rounded {
+  width: 80% !important;
+  margin: 1.6em auto !important;
 }
 
 .MuiTypography-subtitle1 {
-    font-size: 2.7rem !important;
-}
-
-.MuiButtonBase-root{
-    padding: 0px 10px !important;
+  font-size: 1.5rem !important;
 }
