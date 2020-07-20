@@ -71,9 +71,21 @@ const MovieDetails = () => {
                     </Typography>
                   </Grid>
                   <Grid container>
+                    <Typography variant="subtitle1">Rank:</Typography>
+                    <Typography variant="subtitle1" color="textSecondary">
+                      {moviedetails.rank}
+                    </Typography>
+                  </Grid>
+                  <Grid container>
                     <Typography variant="subtitle1">Synopsis:</Typography>
                     <Typography variant="subtitle1" color="textSecondary">
                       {moviedetails.synopsis}
+                    </Typography>
+                  </Grid>
+                  <Grid container>
+                    <Typography variant="subtitle1">Rank:</Typography>
+                    <Typography variant="subtitle1" color="textSecondary">
+                      {moviedetails.rank}
                     </Typography>
                   </Grid>
                 </Grid>
